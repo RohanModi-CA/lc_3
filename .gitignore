@@ -1,0 +1,20 @@
+# Compiled Objects
+*.o
+
+# Executable
+mygame
+
+# Build Artifacts
+Makefile
+
+# Archives
+resources/archive/*
+resources/lib/*.a
+
+# Mesh Build Artifacts
+resources/mesh/lib/*.o
+resources/mesh/*.o
+
+# Model temporary/Generated Files
+resources/models/**/*.zip
+resources/models/**/*.lib
