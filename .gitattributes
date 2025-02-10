@@ -3,3 +3,7 @@
 # Mark fast_obj files as vendored
 resources/mesh/lib/fast_obj.c vendor
 resources/mesh/lib/fast_obj.h vendor
+
+# Mark lib/ directories and their contents as vendored
+resources/lib/** vendor
+resources/mesh/lib/** vendor
