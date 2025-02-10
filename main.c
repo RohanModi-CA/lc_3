@@ -43,9 +43,7 @@ int launch_raylib(fastObjMesh *mesh)
 			BeginMode3D(*camera);
 			DrawGrid(150, 1.0f);
 
-			//mesh_load_draw_vertex_mesh(mesh); 
-			if(debug_vertex_draw_count == 0){ debug_vertex_draw_start_time = ft->current_time;}
-			mesh_load_debug_animate_vertex_draw(mesh, ft, debug_vertex_draw_start_time, &debug_vertex_draw_count);
+			mesh_load_draw_vertex_mesh(mesh); 
 
 
 			EndMode3D();
@@ -73,7 +71,7 @@ int main(void)
 {
 	fastObjMesh *mesh;
 
-	const char obj_filepath[] = "/home/gram/Documents/FileFolder/Projects/lc_3/resources/models/pyramid/newscene.obj";
+	const char obj_filepath[] = "/home/gram/Documents/FileFolder/Projects/lc_3/resources/models/scene/scene.obj";
 
 	mesh = mesh_triangularize_gen_triangularized_mesh(obj_filepath);
 	mesh_load_scale_mesh(mesh, 0.01);
