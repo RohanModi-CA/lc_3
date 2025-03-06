@@ -16,4 +16,6 @@ void mesh_load_scale_mesh(fastObjMesh* mesh, float scale_factor);
 
 void mesh_load_debug_animate_vertex_draw(fastObjMesh *mesh, frame_time *frame_time, double start_time, int *count);
 
+void mesh_load_render_mesh(fastObjMesh *mesh);
+
 #endif

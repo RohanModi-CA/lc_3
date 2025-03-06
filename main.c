@@ -9,6 +9,7 @@
 #include "resources/mesh/mesh_load.h"
 #include "resources/world_funcs/debug_f3.h"
 #include "resources/mesh/mesh_triangularize.h"
+#include "resources/mesh/mesh_move.h"
 
 
 
@@ -28,7 +29,9 @@ int launch_raylib(fastObjMesh *mesh)
 	Camera3D* camera = initialize_camera();
 	frame_time *ft = debug_f3_create_frame_time();
 
+
 	int debug_vertex_draw_count = 0; double debug_vertex_draw_start_time; 
+	Vector3 velocity = {0.4, 0.01, 0.1};
 
 
 	/* Main Loop */
@@ -43,7 +46,13 @@ int launch_raylib(fastObjMesh *mesh)
 			BeginMode3D(*camera);
 			DrawGrid(150, 1.0f);
 
-			mesh_load_draw_vertex_mesh(mesh); 
+			//mesh_load_draw_vertex_mesh(mesh); 
+
+			mesh_load_render_mesh(mesh);
+
+
+
+			mesh_move_const_vel_translate(mesh, velocity, ft);
 
 
 			EndMode3D();
@@ -71,10 +80,21 @@ int main(void)
 {
 	fastObjMesh *mesh;
 
-	const char obj_filepath[] = "/home/gram/Documents/FileFolder/Projects/lc_3/resources/models/scene/scene.obj";
+	const char obj_filepath[] = "/home/gram/Documents/FileFolder/Projects/lc_3/resources/models/deer/79377.obj";
 
-	mesh = mesh_triangularize_gen_triangularized_mesh(obj_filepath);
-	mesh_load_scale_mesh(mesh, 0.01);
+	mesh = mesh_triangularize_gen_final_mesh(obj_filepath);
+	mesh_load_scale_mesh(mesh, 0.41);
+
+	// quick check to see how many faces use each
+	int material1 = 0;
+	for(int i=0; i<mesh->face_count; ++i)
+	{
+		material1 += mesh->face_materials[i];
+	}
+	printf("Material 0: %d, Material 1: %d \n", (mesh->face_count - material1), material1);
+
+
+
 
 	launch_raylib(mesh);
 

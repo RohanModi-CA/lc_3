@@ -34,7 +34,24 @@
 #define FAST_OBJ_VERSION_MINOR  3
 #define FAST_OBJ_VERSION        ((FAST_OBJ_VERSION_MAJOR << 8) | FAST_OBJ_VERSION_MINOR)
 
+#include "../../lib/raylib/raylib.h"
 #include <stdlib.h>
+
+
+struct fastObjImageContent
+{
+	unsigned char	*pixel_array;
+	int				width;
+	int				height;
+	int				n_channels;
+};
+
+struct fastObjImageDatas
+{
+	unsigned int 				number_of_images;
+	struct fastObjImageContent		*image_contents;
+};
+
 
 
 typedef struct
@@ -157,6 +174,15 @@ typedef struct
     /* Mesh groups ('g' tag in .obj file) */
     unsigned int                group_count;
     fastObjGroup*               groups;
+
+	/* Add a list of Colors for each face.
+	 * Each face will be placed sequentially.
+	 * Indexing is easy (every three indices is 
+	 * one for the face_colors list) if triangularized */
+	unsigned int				face_color_count;
+	Color*						face_colors;
+
+	struct fastObjImageDatas	image_datas;
 
 } fastObjMesh;
 

@@ -23,10 +23,6 @@ fastObjMesh* mesh_load_init_mesh(const char* fp)
 
 void mesh_load_draw_vertex_mesh(fastObjMesh* mesh)
 {
-	double time_since_start;
-	int max_count;
-
-
     // initialize x,y,z to be used for each triangle to extract from their Vector3s:
     float x_0; float y_0; float z_0;
     float x_1; float y_1; float z_1;
@@ -45,7 +41,6 @@ void mesh_load_draw_vertex_mesh(fastObjMesh* mesh)
     rlPushMatrix();
 
     // We are making lines
-    rlBegin(RL_LINES);
     rlColor4ub(0, 0, 100, 255);
 
 		// Loop through each triangle. 
@@ -79,8 +74,6 @@ void mesh_load_draw_vertex_mesh(fastObjMesh* mesh)
 
 
 		}
-
-    rlEnd();
     rlPopMatrix();
 
 } // mesh_load_draw_vertex_mesh
@@ -138,8 +131,7 @@ void mesh_load_debug_animate_vertex_draw(fastObjMesh *mesh, frame_time *frame_ti
     rlPushMatrix();
 
     // We are making lines
-	rlSetLineWidth(5.1);	
-    rlBegin(RL_LINES);
+	rlSetLineWidth(5.0);	
     rlColor4ub(0, 0, 100, 255);
 
 		// Loop through each triangle. 
@@ -147,7 +139,6 @@ void mesh_load_debug_animate_vertex_draw(fastObjMesh *mesh, frame_time *frame_ti
 		{
 
 			color.r = 0; color.b = 0; color.g=0; color.a=255;
-			ClearBackground(RAYWHITE);
 
 			// Change only if you're drawing the final one.
 			if( index > *count - 3 )
@@ -179,6 +170,61 @@ void mesh_load_debug_animate_vertex_draw(fastObjMesh *mesh, frame_time *frame_ti
 			DrawLine3D( vec1 , vec2, color);
 			DrawLine3D( vec2 , vec0, color);
 
+
+		}
+
+    rlPopMatrix();
+}
+
+// Assumes a triangular mesh
+void mesh_load_render_mesh(fastObjMesh *mesh)
+{
+    // initialize x,y,z to be used for each triangle to extract from their Vector3s:
+    float x_0; float y_0; float z_0;
+    float x_1; float y_1; float z_1;
+	float x_2; float y_2; float z_2;
+	int pos_index_0; int pos_index_1; int pos_index_2;
+	unsigned int face;
+	Color face_color;
+
+
+	if(mesh->index_count % 3 != 0){
+		fprintf(stderr, "mesh_load.c: Not a triangular mesh.\n");
+		exit(1);
+	}
+
+
+    // save the old state onto the stack, not necessary in this case.
+    rlPushMatrix();
+
+    // We are making lines
+    rlBegin(RL_TRIANGLES);
+    rlColor4ub(0, 0, 100, 255);
+
+		//rlDisableBackfaceCulling();
+		// Loop through each triangle. 
+		for(int index=0; index < mesh->index_count; index += 3)
+		{
+			// Now we get the color.
+			face = (int) index/3;
+			face_color = mesh->face_colors[face];
+			rlColor4ub(face_color.r, face_color.g, face_color.b, face_color.a);
+
+			// We need to make three lines, from vertex to vertex.
+			// First we find the indices of the positions of each vertex.
+			pos_index_0 = mesh->indices[index].p;
+			pos_index_1 = mesh->indices[index + 1].p;
+			pos_index_2 = mesh->indices[index + 2].p;
+
+			// Now we need to extract the position x,y,z from each.
+			x_0 = mesh->positions[3*pos_index_0 + 0];     x_1 = mesh->positions[3*pos_index_1 + 0];	 	  x_2 = mesh->positions[3*pos_index_2 + 0];
+			y_0 = mesh->positions[3*pos_index_0 + 1]; 	  y_1 = mesh->positions[3*pos_index_1 + 1];       y_2 = mesh->positions[3*pos_index_2 + 1];
+			z_0 = mesh->positions[3*pos_index_0 + 2]; 	  z_1 = mesh->positions[3*pos_index_1 + 2];       z_2 = mesh->positions[3*pos_index_2 + 2];
+
+			// Draw Each Triangle
+			rlVertex3f(x_0, y_0, z_0);
+			rlVertex3f(x_1, y_1, z_1);
+			rlVertex3f(x_2, y_2, z_2);
 
 		}
 

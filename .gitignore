@@ -4,9 +4,6 @@
 # Executable
 mygame
 
-# Build Artifacts
-Makefile
-
 # Archives
 resources/archive/*
 resources/lib/*.a

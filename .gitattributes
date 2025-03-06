@@ -1,8 +1,9 @@
 # .gitattributes
 
-# Mark fast_obj files as vendored
+# Mark fast_obj files, and others, as vendored.
 resources/mesh/lib/fast_obj.c vendor
 resources/mesh/lib/fast_obj.h vendor
+resources/mesh/lib/stb_image.h vendor
 
 # Mark lib/ directories and their contents as vendored
 resources/lib/** vendor
